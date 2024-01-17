@@ -1,13 +1,46 @@
 pipeline{
-    agent any 
+    agent any
+    environment{
+        RELEASE='21.01'
+    }
     stages{
-        stage('checking for dependencies-1')
-        {
+        stage('checking for dependency'){
             steps{
-                sh '''
+            sh '''
+
                 git version
-                '''
+                
+            '''
+
+
+            }
+           
+        }
+        // stage('installing required dependencies'){
+        //         steps{
+        //             sh '''
+        //             su -
+        //             snap install go --classic
+        //             go version
+
+        //             '''
+        //         }
+        // }
+        stage('pulling application from git'){
+            steps{
+                  script {
+                    // Clone the Git repository's master branch
+                    def gitRepoUrl = 'https://github.com/satyazzz123/Go-mail'
+
+                    checkout([$class: 'GitSCM', 
+                        branches: [[name: '*/main']], 
+                        userRemoteConfigs: [[url: gitRepoUrl]], 
+                        extensions: [[$class: 'CleanBeforeCheckout'], [$class: 'CloneOption', noTags: false, shallow: true, depth: 1]]
+                    ])
+                }
             }
         }
+
+        
     }
 }
