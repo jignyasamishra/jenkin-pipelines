@@ -1,11 +1,11 @@
 pipeline{
     agent any 
     stages{
-        stage('checking for dependencies')
+        stage('checking for dependencies-1')
         {
             steps{
                 sh '''
-                echo "DONE"
+                git version
                 '''
             }
         }
